@@ -44,12 +44,7 @@ def demo_crossover_strategy():
 
     buy_count  = result.filter(pl.col("crossover") ==  2).height
     sell_count = result.filter(pl.col("crossover") == -2).height
-    total_return = (
-        result["strategy_return"]
-        .fill_null(0)
-        .map_elements(lambda r: 1 + r, return_dtype=pl.Float64)
-        .product() - 1
-    )
+    total_return = (1 + result["strategy_return"].fill_null(0)).product() - 1
     logging.info(f"Buy signals:  {buy_count}")
     logging.info(f"Sell signals: {sell_count}")
     logging.info(f"Strategy total return: {total_return:.2%}")

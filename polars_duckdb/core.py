@@ -62,25 +62,26 @@ def compute_crossover_strategy(
     """).pl()
 
 
-def plot_moving_averages(df: pl.DataFrame, value_col: str, output_dir: Path):
+def plot_moving_averages(df: pl.DataFrame, value_col: str, output_dir: Path, plot: bool = False):
     for col, label, color in [
         ("ama",  "Arithmetic Moving Average",           "#D4A574"),
         ("gma",  "Geometric Moving Average",            "#8B6F9E"),
         ("ewma", "Exponentially Weighted Moving Average", "#E07B54"),
     ]:
-        fig, ax = plt.subplots(figsize=(8, 4))
-        ax.plot(df[value_col].to_list(), label="Original Data", color="#4A90A4", linewidth=1.5)
-        ax.plot(df[col].to_list(), label=label, color=color, linestyle="--", linewidth=1.5)
-        ax.set_title(label)
-        ax.set_xlabel("Time")
-        ax.set_ylabel("Value")
-        ax.legend()
-        plt.tight_layout()
-        plt.savefig(output_dir / f"{col}.png", dpi=100, bbox_inches="tight")
-        plt.close()
+    if plot:
+            fig, ax = plt.subplots(figsize=(8, 4))
+            ax.plot(df[value_col].to_list(), label="Original Data", color="#4A90A4", linewidth=1.5)
+            ax.plot(df[col].to_list(), label=label, color=color, linestyle="--", linewidth=1.5)
+            ax.set_title(label)
+            ax.set_xlabel("Time")
+            ax.set_ylabel("Value")
+            ax.legend()
+            plt.tight_layout()
+            plt.savefig(output_dir / f"{col}.png", dpi=100, bbox_inches="tight")
+            plt.close()
 
 
-def plot_crossover_strategy(df: pl.DataFrame, date_col: str, price_col: str, output_path: Path):
+def plot_crossover_strategy(df: pl.DataFrame, date_col: str, price_col: str, output_path: Path, plot: bool = False):
     dates = df[date_col].to_list()
     prices = df[price_col].to_list()
     sma_short = df["sma_short"].to_list()
@@ -98,26 +99,27 @@ def plot_crossover_strategy(df: pl.DataFrame, date_col: str, price_col: str, out
         for s, l in zip(sma_short, sma_long)
     ]
 
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 10))
+    if plot:
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 10))
 
-    ax1.plot(dates, prices, label="Price", alpha=0.7, color="gray")
-    ax1.plot(dates, sma_short, label=f"{len(sma_short)//10}-day SMA", color="blue")
-    ax1.plot(dates, sma_long,  label=f"{len(sma_long)//4}-day SMA",  color="red")
-    ax1.scatter(buy_dates,  buy_prices,  marker="^", color="green", s=100, label="Buy Signal")
-    ax1.scatter(sell_dates, sell_prices, marker="v", color="red",   s=100, label="Sell Signal")
-    ax1.set_title("Moving Average Crossover Strategy")
-    ax1.legend()
+        ax1.plot(dates, prices, label="Price", alpha=0.7, color="gray")
+        ax1.plot(dates, sma_short, label=f"{len(sma_short)//10}-day SMA", color="blue")
+        ax1.plot(dates, sma_long,  label=f"{len(sma_long)//4}-day SMA",  color="red")
+        ax1.scatter(buy_dates,  buy_prices,  marker="^", color="green", s=100, label="Buy Signal")
+        ax1.scatter(sell_dates, sell_prices, marker="v", color="red",   s=100, label="Sell Signal")
+        ax1.set_title("Moving Average Crossover Strategy")
+        ax1.legend()
 
-    ax2.fill_between(dates, sma_diff_pct, 0,
-                     where=[v > 0 for v in sma_diff_pct],
-                     color="green", alpha=0.3, label="Bullish Divergence")
-    ax2.fill_between(dates, sma_diff_pct, 0,
-                     where=[v < 0 for v in sma_diff_pct],
-                     color="red",   alpha=0.3, label="Bearish Divergence")
-    ax2.axhline(0, color="black", linestyle="-", alpha=0.3)
-    ax2.set_title("Signal Strength (% Difference between SMAs)")
-    ax2.legend()
+        ax2.fill_between(dates, sma_diff_pct, 0,
+                         where=[v > 0 for v in sma_diff_pct],
+                         color="green", alpha=0.3, label="Bullish Divergence")
+        ax2.fill_between(dates, sma_diff_pct, 0,
+                         where=[v < 0 for v in sma_diff_pct],
+                         color="red",   alpha=0.3, label="Bearish Divergence")
+        ax2.axhline(0, color="black", linestyle="-", alpha=0.3)
+        ax2.set_title("Signal Strength (% Difference between SMAs)")
+        ax2.legend()
 
-    plt.tight_layout()
-    plt.savefig(output_path, dpi=100, bbox_inches="tight")
-    plt.close()
+        plt.tight_layout()
+        plt.savefig(output_path, dpi=100, bbox_inches="tight")
+        plt.close()

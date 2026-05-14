@@ -8,7 +8,6 @@ import polars as pl
 from datetime import date, timedelta
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).parent))
 from core import (
     compute_moving_averages,
     compute_crossover_strategy,

@@ -1,7 +1,7 @@
 # Moving Averages in Time Series Analysis
 
-**Published:** 2025-01-20
-**Medium:** [https://medium.com/@kyle-t-jones/moving-averages-in-time-series-analysis-9739352378a5](https://medium.com/@kyle-t-jones/moving-averages-in-time-series-analysis-9739352378a5)
+Published: 2025-01-20
+Medium: [https://medium.com/@kyle-t-jones/moving-averages-in-time-series-analysis-9739352378a5](https://medium.com/@kyle-t-jones/moving-averages-in-time-series-analysis-9739352378a5)
 
 ## About
 

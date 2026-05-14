@@ -29,15 +29,15 @@ The exponentially weighted moving average (EWMA) assigns exponentially decreasin
 
 
 ### Choosing the Right Moving Average
-**Arithmetic Average** is great for general smoothing and short-term trend detection (Example: Monthly sales smoothing). **Geometric Average** is better for percentage changes or ratios (Example: Portfolio returns in finance). **Exponentially Weighted Average** is the best option for real-time systems where recent changes matter more (Example: Monitoring machine IOT data).
+Arithmetic Average is great for general smoothing and short-term trend detection (Example: Monthly sales smoothing). Geometric Average is better for percentage changes or ratios (Example: Portfolio returns in finance). Exponentially Weighted Average is the best option for real-time systems where recent changes matter more (Example: Monitoring machine IOT data).
 
-On the performance side **Arithmetic Mean is e**asy to compute but slow to react to changes. **Geometric Mean r**equires all data points to be non-zero which can lead to some weird behavior (this can be fixed with feature engineering). **Exponentially Weighted is m**ore computationally intensive but more responsive to changes in the data.
+On the performance side Arithmetic Mean is easy to compute but slow to react to changes. Geometric Mean requires all data points to be non-zero which can lead to some weird behavior (this can be fixed with feature engineering). Exponentially Weighted is more computationally intensive but more responsive to changes in the data.
 
 ### Adaptive Moving Averages
 Adaptive methods adjust the weighting dynamically based on recent trends or seasonality (examples are the Kalman filter or Holt-Winters method).
 
 ### Combining Averages
-We can combine multiple moving averages for enhanced insights. **Crossover Analysis** is an commonly used in finance and we compare short- and long-term averages for signals.
+We can combine multiple moving averages for enhanced insights. Crossover Analysis is an commonly used in finance and we compare short- and long-term averages for signals.
 
 
 

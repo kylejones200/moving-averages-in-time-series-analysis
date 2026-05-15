@@ -2,7 +2,6 @@
 
 
 
-from datetime import datetime, timedelta
 import logging
 import matplotlib.pyplot as plt
 import numpy as np
@@ -134,7 +133,7 @@ plt.show()
 # Print trading summary
 buy_signals_count = len(buy_signals)
 sell_signals_count = len(sell_signals)
-logger.info(f"\nTrading Summary:")
+logger.info("\nTrading Summary:")
 logger.info(f"Number of Buy Signals: {buy_signals_count}")
 logger.info(f"Number of Sell Signals: {sell_signals_count}")
 

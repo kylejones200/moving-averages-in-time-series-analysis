@@ -68,7 +68,7 @@ def plot_moving_averages(df: pl.DataFrame, value_col: str, output_dir: Path, plo
         ("gma",  "Geometric Moving Average",            "#8B6F9E"),
         ("ewma", "Exponentially Weighted Moving Average", "#E07B54"),
     ]:
-    if plot:
+        if plot:
             fig, ax = plt.subplots(figsize=(8, 4))
             ax.plot(df[value_col].to_list(), label="Original Data", color="#4A90A4", linewidth=1.5)
             ax.plot(df[col].to_list(), label=label, color=color, linestyle="--", linewidth=1.5)

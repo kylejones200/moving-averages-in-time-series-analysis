@@ -14,9 +14,7 @@ from core import (
     plot_moving_averages,
 )
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
 OUTPUT_DIR = Path(__file__).parent.parent / "images"
 OUTPUT_DIR.mkdir(exist_ok=True)
 
@@ -36,16 +34,9 @@ def demo_crossover_strategy():
     prices = 100 * np.exp(np.cumsum(returns))
     start = date(2023, 1, 1)
     dates = [start + timedelta(days=i) for i in range(n_days)]
-
     df = pl.DataFrame({"Date": dates, "Price": prices.tolist()})
-    result = compute_crossover_strategy(
-        df, "Date", "Price", short_window=20, long_window=50
-    )
-
-    plot_crossover_strategy(
-        result, "Date", "Price", OUTPUT_DIR / "moving_average_crossover.png"
-    )
-
+    result = compute_crossover_strategy(df, "Date", "Price", short_window=20, long_window=50)
+    plot_crossover_strategy(result, "Date", "Price", OUTPUT_DIR / "moving_average_crossover.png")
     buy_count = result.filter(pl.col("crossover") == 2).height
     sell_count = result.filter(pl.col("crossover") == -2).height
     total_return = (1 + result["strategy_return"].fill_null(0)).product() - 1

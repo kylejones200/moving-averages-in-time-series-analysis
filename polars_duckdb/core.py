@@ -4,13 +4,10 @@ from pathlib import Path
 
 import duckdb
 import matplotlib.pyplot as plt
-import numpy as np
 import polars as pl
 
 
-def compute_moving_averages(
-    df: pl.DataFrame, value_col: str, window: int
-) -> pl.DataFrame:
+def compute_moving_averages(df: pl.DataFrame, value_col: str, window: int) -> pl.DataFrame:
     """AMA and GMA via DuckDB window functions; EWMA via Polars (no native DuckDB EWMA)."""
     result = duckdb.sql(f"""
         SELECT
@@ -23,7 +20,6 @@ def compute_moving_averages(
             ) AS gma
         FROM df
     """).pl()
-
     return result.with_columns(pl.col(value_col).ewm_mean(alpha=0.3).alias("ewma"))
 
 
@@ -63,9 +59,7 @@ def compute_crossover_strategy(
     """).pl()
 
 
-def plot_moving_averages(
-    df: pl.DataFrame, value_col: str, output_dir: Path, plot: bool = False
-):
+def plot_moving_averages(df: pl.DataFrame, value_col: str, output_dir: Path, plot: bool = False):
     for col, label, color in [
         ("ama", "Arithmetic Moving Average", "#D4A574"),
         ("gma", "Geometric Moving Average", "#8B6F9E"),
@@ -106,33 +100,24 @@ def plot_crossover_strategy(
     prices = df[price_col].to_list()
     sma_short = df["sma_short"].to_list()
     sma_long = df["sma_long"].to_list()
-
     buy_mask = [c == 2 for c in df["crossover"].to_list()]
     sell_mask = [c == -2 for c in df["crossover"].to_list()]
     buy_dates = [d for d, m in zip(dates, buy_mask) if m]
     buy_prices = [p for p, m in zip(prices, buy_mask) if m]
     sell_dates = [d for d, m in zip(dates, sell_mask) if m]
     sell_prices = [p for p, m in zip(prices, sell_mask) if m]
-
-    sma_diff_pct = [(s - l) / l * 100 if l else 0 for s, l in zip(sma_short, sma_long)]
-
+    sma_diff_pct = [
+        (s - lag) / lag * 100 if lag else 0 for s, lag in zip(sma_short, sma_long)
+    ]
     if plot:
         fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(15, 10))
-
         ax1.plot(dates, prices, label="Price", alpha=0.7, color="gray")
-        ax1.plot(
-            dates, sma_short, label=f"{len(sma_short) // 10}-day SMA", color="blue"
-        )
+        ax1.plot(dates, sma_short, label=f"{len(sma_short) // 10}-day SMA", color="blue")
         ax1.plot(dates, sma_long, label=f"{len(sma_long) // 4}-day SMA", color="red")
-        ax1.scatter(
-            buy_dates, buy_prices, marker="^", color="green", s=100, label="Buy Signal"
-        )
-        ax1.scatter(
-            sell_dates, sell_prices, marker="v", color="red", s=100, label="Sell Signal"
-        )
+        ax1.scatter(buy_dates, buy_prices, marker="^", color="green", s=100, label="Buy Signal")
+        ax1.scatter(sell_dates, sell_prices, marker="v", color="red", s=100, label="Sell Signal")
         ax1.set_title("Moving Average Crossover Strategy")
         ax1.legend()
-
         ax2.fill_between(
             dates,
             sma_diff_pct,
@@ -154,7 +139,6 @@ def plot_crossover_strategy(
         ax2.axhline(0, color="black", linestyle="-", alpha=0.3)
         ax2.set_title("Signal Strength (% Difference between SMAs)")
         ax2.legend()
-
         plt.tight_layout()
         plt.savefig(output_path, dpi=100, bbox_inches="tight")
         plt.close()

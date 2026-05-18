@@ -1,6 +1,5 @@
 # Description: Short example for Moving Averages in Time Series Analysis.
 
-
 import logging
 
 import matplotlib.pyplot as plt
@@ -12,7 +11,6 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
-
 
 # Example time series data
 data = [10, 12, 14, 13, 15, 16, 14, 13, 17, 18]
@@ -83,9 +81,7 @@ df.loc[df["SMA20"] > df["SMA50"], "Signal"] = 1  # Buy signal
 df.loc[df["SMA20"] < df["SMA50"], "Signal"] = -1  # Sell signal
 
 # Detect crossover points
-df["Crossover"] = df[
-    "Signal"
-].diff()  # Will be 2 for buy crossover, -2 for sell crossover
+df["Crossover"] = df["Signal"].diff()  # Will be 2 for buy crossover, -2 for sell crossover
 
 # Create the visualization
 plt.figure(figsize=(15, 10))

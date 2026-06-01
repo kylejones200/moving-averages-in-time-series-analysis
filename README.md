@@ -11,14 +11,7 @@ A moving average computes the average of data points within a fixed window that 
 
 Means help us find the trend as the data changes over time (we need to believe that there the mean is meaningful for this to make sense). We can use the moving average to remove random variations and reduce noise. we can also use moving averages as signals like when to buy/sell stock.
 
-## About
 
-Place the code for this article in this repository.
-The original article export is saved as `article.md`.
-
-## Files
-
-Add your `.ipynb`, `.py`, `.yaml`, `.js`, `.ts`, or other project files here.
 
 ## Disclaimer
 
